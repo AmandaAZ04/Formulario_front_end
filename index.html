@@ -11,105 +11,96 @@
 </head>
 
 <body>
-  <main class="container-fluid py-5">
+  <main class="container-fluid py-4">
     <section class="form-wrapper mx-auto">
       <h1 class="text-center mb-4">Formulario de Registro</h1>
 
       <form id="registroForm" novalidate>
         <div class="row g-4">
           <div class="col-12 col-lg-4">
-            <div class="mb-4">
-              <label for="nombre" class="form-label">Nombre completo</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre completo">
-                <span class="input-group-text estado-campo" id="iconoNombre"></span>
-                <div class="invalid-feedback" id="errorNombre"></div>
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="nombre" class="form-label">Nombre completo</label>
+                <span class="obligatorio">*Obligatorio*</span>
               </div>
+              <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre completo">
+              <div class="invalid-feedback" id="errorNombre"></div>
             </div>
 
-            <div class="mb-4">
-              <label for="cv" class="form-label">Curriculum Vitae</label>
-              <div class="input-group">
-                <input type="file" class="form-control" id="cv" accept=".pdf,.docx">
-                <span class="input-group-text estado-campo" id="iconoCv"></span>
-                <div class="invalid-feedback" id="errorCv"></div>
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="cv" class="form-label">Curriculum Vitae</label>
               </div>
+              <input type="file" class="form-control" id="cv" accept=".pdf,.docx">
+              <div class="invalid-feedback" id="errorCv"></div>
             </div>
 
-            <div class="mb-4">
-              <label for="password" class="form-label">Contraseña</label>
-              <div class="input-group">
-                <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
-                <span class="input-group-text estado-campo" id="iconoPassword"></span>
-                <div class="invalid-feedback" id="errorPassword"></div>
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="password" class="form-label">Contraseña</label>
+                <span class="obligatorio">*Obligatorio*</span>
               </div>
-            </div>
-          </div>
-
-          <div class="col-12 col-lg-4">
-            <div class="mb-4">
-              <label for="rut" class="form-label">Rut</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="rut" placeholder="Ej: 12.345.678-9">
-                <span class="input-group-text estado-campo" id="iconoRut"></span>
-                <div class="invalid-feedback" id="errorRut"></div>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <label for="email" class="form-label">Email</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="email" placeholder="nombre@gmail.com">
-                <span class="input-group-text estado-campo" id="iconoEmail"></span>
-                <div class="invalid-feedback" id="errorEmail"></div>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <label for="repetirPassword" class="form-label">Repetir contraseña</label>
-              <div class="input-group">
-                <input type="password" class="form-control" id="repetirPassword" placeholder="Repita su contraseña">
-                <span class="input-group-text estado-campo" id="iconoRepetirPassword"></span>
-                <div class="invalid-feedback" id="errorRepetirPassword"></div>
-              </div>
+              <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+              <div class="invalid-feedback" id="errorPassword"></div>
             </div>
           </div>
 
           <div class="col-12 col-lg-4">
-            <div class="mb-4">
-              <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-              <div class="input-group">
-                <input type="date" class="form-control" id="fechaNacimiento">
-                <span class="input-group-text calendario-icono">📅</span>
-                <span class="input-group-text estado-campo" id="iconoFecha"></span>
-                <div class="invalid-feedback" id="errorFecha"></div>
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="rut" class="form-label">Rut</label>
+                <span class="obligatorio">*Obligatorio*</span>
               </div>
+              <input type="text" class="form-control" id="rut" placeholder="Ej: 12.345.678-9">
+              <div class="invalid-feedback" id="errorRut"></div>
             </div>
 
-            <div class="mb-4">
-              <label for="genero" class="form-label">Género</label>
-              <div class="input-group">
-                <select class="form-select" id="genero">
-                  <option value="">Seleccione...</option>
-                  <option value="femenino">Femenino</option>
-                  <option value="masculino">Masculino</option>
-                  <option value="otro">Otro</option>
-                </select>
-                <span class="input-group-text estado-campo" id="iconoGenero"></span>
-                <div class="invalid-feedback" id="errorGenero"></div>
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="email" class="form-label">Email</label>
+                <span class="obligatorio">*Obligatorio*</span>
               </div>
+              <input type="text" class="form-control" id="email" placeholder="nombre@gmail.com">
+              <div class="invalid-feedback" id="errorEmail"></div>
+            </div>
+
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="repetirPassword" class="form-label">Repetir contraseña</label>
+                <span class="obligatorio">*Obligatorio*</span>
+              </div>
+              <input type="password" class="form-control" id="repetirPassword" placeholder="Repita su contraseña">
+              <div class="invalid-feedback" id="errorRepetirPassword"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-4">
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+              </div>
+              <input type="date" class="form-control" id="fechaNacimiento">
+              <div class="invalid-feedback" id="errorFecha"></div>
+            </div>
+
+            <div class="campo-form">
+              <div class="label-row">
+                <label for="genero" class="form-label">Género</label>
+              </div>
+              <select class="form-select" id="genero">
+                <option value="">Seleccione...</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+                <option value="otro">Otro</option>
+              </select>
+              <div class="invalid-feedback" id="errorGenero"></div>
             </div>
           </div>
         </div>
 
         <div class="d-flex justify-content-end gap-3 mt-3">
-          <button type="button" class="btn btn-outline-light" id="btnCancelar">
-            Cancelar
-          </button>
-
-          <button type="submit" class="btn btn-light" id="btnEnviar">
-            Guardar
-          </button>
+          <button type="button" class="btn btn-outline-light" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="btn btn-light" id="btnEnviar">Guardar</button>
         </div>
       </form>
     </section>

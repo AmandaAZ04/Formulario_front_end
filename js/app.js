@@ -14,49 +14,41 @@ const dominiosPermitidos = [
 const campos = [
   {
     id: 'nombre',
-    icono: 'iconoNombre',
     error: 'errorNombre',
     validar: validarNombre
   },
   {
     id: 'cv',
-    icono: 'iconoCv',
     error: 'errorCv',
     validar: validarCv
   },
   {
     id: 'password',
-    icono: 'iconoPassword',
     error: 'errorPassword',
     validar: validarPassword
   },
   {
     id: 'rut',
-    icono: 'iconoRut',
     error: 'errorRut',
     validar: validarRut
   },
   {
     id: 'email',
-    icono: 'iconoEmail',
     error: 'errorEmail',
     validar: validarEmail
   },
   {
     id: 'repetirPassword',
-    icono: 'iconoRepetirPassword',
     error: 'errorRepetirPassword',
     validar: validarRepetirPassword
   },
   {
     id: 'fechaNacimiento',
-    icono: 'iconoFecha',
     error: 'errorFecha',
     validar: validarFechaNacimiento
   },
   {
     id: 'genero',
-    icono: 'iconoGenero',
     error: 'errorGenero',
     validar: validarGenero
   }
@@ -87,10 +79,10 @@ function validarNombre(input) {
 
 function validarCv(input) {
   if (input.files.length === 0) {
-    limpiarCampoPorId('cv', 'iconoCv', 'errorCv');
     return {
       valido: true,
-      mensaje: ''
+      mensaje: '',
+      opcionalVacio: true
     };
   }
 
@@ -215,7 +207,7 @@ function validarEmail(input) {
   if (!dominiosPermitidos.includes(dominio)) {
     return {
       valido: false,
-      mensaje: 'Use un dominio válido: gmail, hotmail, outlook, yahoo, icloud o inacapmail.'
+      mensaje: 'Use gmail, hotmail, outlook, yahoo, icloud o inacapmail.'
     };
   }
 
@@ -253,10 +245,10 @@ function validarFechaNacimiento(input) {
   const valor = input.value;
 
   if (valor === '') {
-    limpiarCampoPorId('fechaNacimiento', 'iconoFecha', 'errorFecha');
     return {
       valido: true,
-      mensaje: ''
+      mensaje: '',
+      opcionalVacio: true
     };
   }
 
@@ -278,7 +270,11 @@ function validarFechaNacimiento(input) {
 
 function validarGenero(input) {
   if (input.value === '') {
-    limpiarCampoPorId('genero', 'iconoGenero', 'errorGenero');
+    return {
+      valido: true,
+      mensaje: '',
+      opcionalVacio: true
+    };
   }
 
   return {
@@ -291,45 +287,29 @@ function limpiarRut(rut) {
   return rut.replace(/\./g, '').replace(/-/g, '').trim();
 }
 
-function marcarValido(input, iconoId, errorId) {
-  const icono = document.getElementById(iconoId);
+function marcarValido(input, errorId) {
   const error = document.getElementById(errorId);
 
   input.classList.remove('is-invalid');
   input.classList.add('is-valid');
 
-  icono.textContent = '✓';
-  icono.classList.remove('invalido');
-  icono.classList.add('valido');
-
   error.textContent = '';
 }
 
-function marcarInvalido(input, iconoId, errorId, mensaje) {
-  const icono = document.getElementById(iconoId);
+function marcarInvalido(input, errorId, mensaje) {
   const error = document.getElementById(errorId);
 
   input.classList.remove('is-valid');
   input.classList.add('is-invalid');
 
-  icono.textContent = 'X';
-  icono.classList.remove('valido');
-  icono.classList.add('invalido');
-
   error.textContent = mensaje;
 }
 
-function limpiarCampoPorId(inputId, iconoId, errorId) {
-  const input = document.getElementById(inputId);
-  const icono = document.getElementById(iconoId);
+function limpiarCampo(input, errorId) {
   const error = document.getElementById(errorId);
 
   input.classList.remove('is-valid');
   input.classList.remove('is-invalid');
-
-  icono.textContent = '';
-  icono.classList.remove('valido');
-  icono.classList.remove('invalido');
 
   error.textContent = '';
 }
@@ -338,24 +318,17 @@ function validarCampo(campo) {
   const input = document.getElementById(campo.id);
   const resultado = campo.validar(input);
 
-  if (resultado.valido) {
-    if (campo.id === 'cv' && input.files.length === 0) {
-      return true;
-    }
-
-    if (campo.id === 'fechaNacimiento' && input.value === '') {
-      return true;
-    }
-
-    if (campo.id === 'genero' && input.value === '') {
-      return true;
-    }
-
-    marcarValido(input, campo.icono, campo.error);
+  if (resultado.opcionalVacio) {
+    limpiarCampo(input, campo.error);
     return true;
   }
 
-  marcarInvalido(input, campo.icono, campo.error, resultado.mensaje);
+  if (resultado.valido) {
+    marcarValido(input, campo.error);
+    return true;
+  }
+
+  marcarInvalido(input, campo.error, resultado.mensaje);
   return false;
 }
 
@@ -381,7 +354,8 @@ function limpiarFormulario() {
   formulario.reset();
 
   campos.forEach(function (campo) {
-    limpiarCampoPorId(campo.id, campo.icono, campo.error);
+    const input = document.getElementById(campo.id);
+    limpiarCampo(input, campo.error);
   });
 }
 
@@ -393,7 +367,7 @@ campos.forEach(function (campo) {
   });
 
   input.addEventListener('input', function () {
-    limpiarCampoPorId(campo.id, campo.icono, campo.error);
+    limpiarCampo(input, campo.error);
   });
 
   input.addEventListener('change', function () {
