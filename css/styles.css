@@ -5,52 +5,58 @@ body {
 }
 
 .form-wrapper {
-  width: min(1260px, 96vw);
+  width: min(1360px, 96vw);
   background-color: #e97878;
   border: 4px solid #ffffff;
   border-radius: 22px;
-  padding: 34px 42px 28px;
+  padding: 34px 54px 36px;
   color: #ffffff;
   box-shadow: 0 20px 55px rgba(115, 28, 28, 0.3);
 }
 
 .form-wrapper h1 {
+  font-size: 42px;
   font-weight: 800;
 }
 
 .campo-form {
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 }
 
 .label-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 28px;
-  margin-bottom: 6px;
+  gap: 16px;
+  min-height: 30px;
+  margin-bottom: 8px;
 }
 
 .form-label {
   margin-bottom: 0;
+  font-size: 21px;
   font-weight: 800;
-  font-size: 18px;
 }
 
 .obligatorio {
-  font-size: 13px;
+  min-width: 16px;
+  text-align: right;
+  font-size: 16px;
   font-weight: 800;
   color: #ffffff;
-  opacity: 0.95;
   white-space: nowrap;
+}
+
+.obligatorio.activo {
+  min-width: 120px;
 }
 
 .form-control,
 .form-select {
-  min-height: 46px;
+  min-height: 50px;
   border: 2px solid #ffffff;
   border-radius: 11px;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .form-control:focus,
@@ -69,37 +75,83 @@ body {
   border-color: #198754;
 }
 
-.form-control::file-selector-button {
-  min-height: 44px;
-  margin-top: -1px;
-  margin-bottom: -1px;
-  margin-left: -13px;
-  margin-right: 14px;
-  padding: 0 18px;
+.file-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 11px;
+}
+
+.file-box.is-invalid {
+  border-color: #dc3545;
+}
+
+.file-box.is-valid {
+  border-color: #198754;
+}
+
+.file-box::after {
+  position: absolute;
+  right: 14px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.file-box.is-invalid::after {
+  content: "!";
+  color: #dc3545;
+  border: 2px solid #dc3545;
+  width: 22px;
+  height: 22px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.file-box.is-valid::after {
+  content: "✓";
+  color: #198754;
+}
+
+.file-button {
+  min-height: 50px;
+  padding: 0 24px;
   color: #1f1f1f;
   background-color: #ffffff;
   border: 0;
   border-right: 1px solid #dddddd;
-  font-weight: 500;
+  font-size: 17px;
 }
 
-.form-control::file-selector-button:hover {
-  background-color: #f3f3f3;
+.file-name {
+  flex: 1;
+  padding: 0 48px 0 18px;
+  color: #444444;
+  font-size: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-#cv::file-selector-button {
-  content: "Seleccionar";
+#cv {
+  display: none;
 }
 
-.invalid-feedback {
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 15px;
-  margin-top: 8px;
+.botones-form {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  margin-top: 64px;
 }
 
 .btn {
-  min-width: 130px;
+  min-width: 132px;
+  min-height: 48px;
+  font-size: 18px;
   font-weight: 800;
   border-radius: 10px;
 }
@@ -112,13 +164,23 @@ body {
   color: #b33b3b;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .form-wrapper {
     width: 95vw;
-    padding: 24px;
+    padding: 28px;
   }
 
-  .d-flex {
+  .form-wrapper h1 {
+    font-size: 34px;
+  }
+
+  .botones-form {
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 576px) {
+  .botones-form {
     flex-direction: column;
   }
 
