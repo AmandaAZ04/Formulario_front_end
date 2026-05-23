@@ -6,6 +6,7 @@
   --valid: #72d14d;
   --valid-dark: #35a52c;
   --invalid: #ff5360;
+  --invalid-dark: #b31625;
 }
 
 * {
@@ -175,7 +176,7 @@ label,
 
 .file-shell.valid button {
   background: var(--valid);
-  color: #2f7d25;
+  color: var(--valid-dark);
 }
 
 .file-shell.valid span {
@@ -184,7 +185,7 @@ label,
 
 .file-shell.invalid button {
   background: var(--invalid);
-  color: #b31625;
+  color: var(--invalid-dark);
 }
 
 .file-shell.invalid span {
@@ -219,7 +220,9 @@ label,
 }
 
 .date-shell.invalid input,
-.date-shell.invalid input::-webkit-datetime-edit {
+.date-shell.invalid input::-webkit-datetime-edit,
+.date-shell.invalid input.has-value,
+.date-shell.invalid input.has-value::-webkit-datetime-edit {
   color: var(--invalid);
 }
 
@@ -239,6 +242,14 @@ label,
   border: 0;
   background: transparent;
   color: var(--purple-dark);
+}
+
+.date-shell.valid .calendar-button {
+  color: var(--valid-dark);
+}
+
+.date-shell.invalid .calendar-button {
+  color: var(--invalid-dark);
 }
 
 .calendar-button,
@@ -290,7 +301,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .select-shell.invalid .select-arrow {
-  color: #b31625;
+  color: var(--invalid-dark);
 }
 
 .password-shell {
