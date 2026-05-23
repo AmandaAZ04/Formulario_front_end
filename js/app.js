@@ -39,6 +39,8 @@ const campos = [
   { id: 'repetirPassword', box: 'boxRepetirPassword', validar: validarRepetirPassword }
 ];
 
+/* ========== VALIDACIONES ========== */
+
 /* Valida que el nombre tenga solo letras, espacios, nombre y apellido */
 function validarNombre(input) {
   const valor = input.value.trim();
@@ -55,20 +57,29 @@ function filtrarNombre(input) {
     .replace(/\s{2,}/g, ' ');
 }
 
-/* Valida rut con digito verificador */
+/* Limpia puntos y guion para calcular rut, pero conserva la K final si existe */
+function limpiarRut(rut) {
+  return rut.replace(/\./g, '').replace(/-/g, '').trim().toUpperCase();
+}
+
+/* Valida rut con dígito verificador (incluye K) */
 function validarRut(input) {
-  const valor = limpiarRut(input.value);
-  if (valor === '' || !/^[0-9]+[0-9]$/.test(valor)) {
+  let valorLimpio = limpiarRut(input.value);
+  if (valorLimpio === '') {
     return { valido: false };
   }
-  const cuerpo = valor.slice(0, -1);
-  const dv = valor.slice(-1);
+  // Expresión regular: números seguidos de un dígito verificador (número o K)
+  if (!/^[0-9]+[0-9K]$/.test(valorLimpio)) {
+    return { valido: false };
+  }
+  const cuerpo = valorLimpio.slice(0, -1);
+  const dvIngresado = valorLimpio.slice(-1);
+  
   let suma = 0;
   let multiplicador = 2;
   for (let i = cuerpo.length - 1; i >= 0; i--) {
-    suma += Number(cuerpo[i]) * multiplicador;
+    suma += parseInt(cuerpo[i], 10) * multiplicador;
     multiplicador++;
-
     if (multiplicador > 7) {
       multiplicador = 2;
     }
@@ -82,12 +93,19 @@ function validarRut(input) {
   } else {
     dvEsperado = String(resultado);
   }
-  return { valido: dv === dvEsperado };
+  return { valido: dvIngresado === dvEsperado };
 }
 
-/* Permite escribir solo números, puntos y guion en el rut */
+/* Permitir escribir solo números, puntos, guión y K (solo al final se validará) */
 function filtrarRut(input) {
-  input.value = input.value.replace(/[^0-9.-]/g, '');
+  // Permite números, punto, guión y la letra K (solo una K)
+  let valor = input.value.replace(/[^0-9.kK-]/g, '');
+  // Evita múltiples K
+  let contK = (valor.match(/k/gi) || []).length;
+  if (contK > 1) {
+    valor = valor.slice(0, -1);
+  }
+  input.value = valor;
 }
 
 /* Valida fecha opcional y evita fechas futuras */
@@ -97,16 +115,19 @@ function validarFechaNacimiento(input) {
   }
   const fechaIngresada = new Date(input.value);
   const hoy = new Date();
+  // Resetear horas para comparar solo fechas
+  hoy.setHours(0, 0, 0, 0);
+  fechaIngresada.setHours(0, 0, 0, 0);
   return { valido: fechaIngresada <= hoy };
 }
 
-/* Valida archivo, solo PDF o DOCX */
+/* Valida archivo, solo PDF o DOCX (sin distinguir mayúsculas/minúsculas) */
 function validarCv(input) {
   if (input.files.length === 0) {
     return { valido: true, opcionalVacio: true };
   }
   const nombreArchivo = input.files[0].name;
-  const regexArchivo = /\.(pdf|docx)$/i;
+  const regexArchivo = /\.(pdf|docx)$/i; // bandera i para insensible a mayúsculas
   return { valido: regexArchivo.test(nombreArchivo) };
 }
 
@@ -144,10 +165,7 @@ function validarRepetirPassword(input) {
   };
 }
 
-/* Limpia puntos y guion para calcular rut */
-function limpiarRut(rut) {
-  return rut.replace(/\./g, '').replace(/-/g, '').trim();
-}
+/* ========== FUNCIONES DE PINTADO Y VALIDACIÓN GENERAL ========== */
 
 /* Cambia clases visuales valid/invalid de cada campo */
 function pintarEstado(box, estado) {
@@ -194,6 +212,7 @@ function validarFormulario(event) {
   });
   if (formularioValido) {
     alert('El envío de datos ha sido correcto.');
+    // Opcional: podrías resetear el formulario aquí si quieres, pero la pauta no lo pide.
   }
 }
 
@@ -209,6 +228,8 @@ function limpiarFormulario() {
   cerrarPassword('password', 'togglePassword');
   cerrarPassword('repetirPassword', 'toggleRepetirPassword');
 }
+
+/* ========== MANEJO DE CALENDARIO Y SELECT ========== */
 
 /* Abre calendario nativo */
 function abrirCalendario() {
@@ -227,6 +248,8 @@ function abrirGenero() {
     genero.focus();
   }
 }
+
+/* ========== MANEJO DE OJOS (MOSTRAR/OCULTAR CONTRASEÑA) ========== */
 
 /* Configura boton ojo para mostrar u ocultar contraseña */
 function configurarTogglePassword(inputId, botonId) {
@@ -251,9 +274,12 @@ function cerrarPassword(inputId, botonId) {
   boton.setAttribute('aria-label', 'Mostrar contraseña');
 }
 
-/* Eventos de escritura, salida y cambio para todos los campos */
+/* ========== EVENTOS DE LOS CAMPOS ========== */
+
+/* Asignar eventos de entrada, salida y cambio a cada campo */
 campos.forEach(function (campo) {
   const input = document.getElementById(campo.id);
+  
   input.addEventListener('input', function () {
     if (campo.id === 'nombre') {
       filtrarNombre(input);
@@ -266,24 +292,34 @@ campos.forEach(function (campo) {
     if (campo.id === 'fechaNacimiento') {
       input.classList.toggle('has-value', input.value !== '');
     }
+    // Si el campo que cambió es "password", y "repetirPassword" no está vacío, revalidar repetir
+    if (campo.id === 'password') {
+      const repetirInput = document.getElementById('repetirPassword');
+      if (repetirInput.value.trim() !== '') {
+        const campoRepetir = campos.find(c => c.id === 'repetirPassword');
+        validarCampo(campoRepetir, false);
+      }
+    }
   });
+  
   input.addEventListener('blur', function () {
     validarCampo(campo, false);
   });
+  
   input.addEventListener('change', function () {
     if (campo.id === 'fechaNacimiento') {
       input.classList.toggle('has-value', input.value !== '');
     }
     validarCampo(campo, false);
+    // También si cambia fecha, etc.
   });
 });
 
-/* Abre selector de archivo al presionar seleccionar */
+/* Eventos específicos para el archivo */
 btnCv.addEventListener('click', function () {
   inputCv.click();
 });
 
-/* Actualiza nombre del archivo y valida CV */
 inputCv.addEventListener('change', function () {
   if (inputCv.files.length > 0) {
     nombreCv.textContent = inputCv.files[0].name;
@@ -295,27 +331,22 @@ inputCv.addEventListener('change', function () {
   }), false);
 });
 
-/* Abre calendario al hacer clic en el campo completo */
+/* Eventos para abrir calendario y select al hacer clic en el contenedor o botón */
 boxFecha.addEventListener('click', abrirCalendario);
-
-/* Abre calendario al hacer clic en el icono */
 btnCalendario.addEventListener('click', function (event) {
   event.preventDefault();
   event.stopPropagation();
   abrirCalendario();
 });
 
-/* Abre genero al hacer clic en el campo completo */
 boxGenero.addEventListener('click', abrirGenero);
-
-/* Abre genero al hacer clic en la flecha */
 btnGenero.addEventListener('click', function (event) {
   event.preventDefault();
   event.stopPropagation();
   abrirGenero();
 });
 
-/* Activa ojos de contraseña */
+/* Activar los botones de mostrar/ocultar contraseña */
 configurarTogglePassword('password', 'togglePassword');
 configurarTogglePassword('repetirPassword', 'toggleRepetirPassword');
 
