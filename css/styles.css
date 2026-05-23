@@ -1,16 +1,18 @@
 :root {
-  --purple-dark: #66008a;
-  --purple-mid: #d96af1;
-  --purple-soft: #f2cdf8;
-  --purple-page: #d36bef;
-  --valid: #72d14d;
-  --invalid: #ff5360;
+  --purple-dark: #66008a;  /* letras moradas oscuras */
+  --purple-mid: #d96af1;   /* fondo de los campos / botones */
+  --purple-soft: #f2cdf8;  /* fondo del rectángulo grande y centro de inputs */
+  --purple-page: #d36bef;  /* fondo de toda la página */
+  --valid: #72d14d;        /* verde cuando está correcto */
+  --invalid: #ff5360;      /* rojo cuando está incorrecto */
 }
 
+/* Ajuste general para que padding y bordes no deformen tamaños */
 * {
   box-sizing: border-box;
 }
 
+/* Fondo general de la página y fuente */
 body {
   min-height: 100vh;
   margin: 0;
@@ -19,22 +21,25 @@ body {
   color: var(--purple-dark);
 }
 
+/* Contenedor general de toda la pantalla */
 .page {
   min-height: 100vh;
-  padding: 18px 28px 24px;
+  padding: 18px 5px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
+/* Rectángulo grande del formulario */
 .form-card {
   width: min(2000px, 94vw);
   margin: 0 auto;
-  padding: 32px 40px 90px;
+  padding: 32px 35px 20px;
   background: var(--purple-soft);
   border-radius: 42px;
 }
 
+/* Título principal */
 h1 {
   margin: 0 0 40px;
   text-align: center;
@@ -44,13 +49,15 @@ h1 {
   color: var(--purple-dark);
 }
 
+/* Separación vertical de cada campo completo */
 .field {
-  margin-bottom: 34px;
+  margin-bottom: 40px;
 }
 
+/* Fila donde va el nombre del campo y el asterisco */
 .label-row {
   height: 34px;
-  padding-left: 6px;
+  padding-left: 30px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -58,20 +65,23 @@ h1 {
   margin-bottom: 7px;
 }
 
+/* Texto de los labels y asteriscos */
 label,
 .label-row span {
   margin: 0;
-  font-size: clamp(24px, 1.85vw, 34px);
+  font-size: clamp(30px, 1.85vw, 34px);
   line-height: 1;
   color: var(--purple-dark);
   text-transform: uppercase;
 }
 
+/* Asterisco de campos obligatorios */
 .label-row span {
   min-width: 22px;
   text-align: center;
 }
 
+/* Cápsula exterior de los inputs normales y archivo */
 .input-shell,
 .file-shell {
   width: 100%;
@@ -85,6 +95,7 @@ label,
   transition: 0.18s ease;
 }
 
+/* Rectángulo interior donde se escribe */
 .input-shell input,
 .input-shell select {
   width: 100%;
@@ -96,49 +107,57 @@ label,
   background: var(--purple-soft);
   color: var(--purple-dark);
   font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: clamp(20px, 1.4vw, 27px);
+  font-size: clamp(25px, 1.4vw, 27px);
   text-transform: uppercase;
 }
 
+/* Color del texto placeholder */
 .input-shell input::placeholder,
 .input-shell select {
   color: var(--purple-mid);
   opacity: 1;
 }
 
+/* Estado incorrecto: cambia la cápsula exterior a rojo */
 .input-shell.invalid,
 .file-shell.invalid {
   background: var(--invalid);
   border-color: var(--invalid);
 }
 
+/* Estado incorrecto: cambia letras internas a rojo */
 .input-shell.invalid input,
 .input-shell.invalid select,
 .file-shell.invalid span {
   color: var(--invalid);
 }
 
+/* Estado incorrecto: placeholder rojo */
 .input-shell.invalid input::placeholder {
   color: var(--invalid);
 }
 
+/* Estado correcto: cambia la cápsula exterior a verde */
 .input-shell.valid,
 .file-shell.valid {
   background: var(--valid);
   border-color: var(--valid);
 }
 
+/* Estado correcto: cambia letras internas a verde */
 .input-shell.valid input,
 .input-shell.valid select,
 .file-shell.valid span {
   color: var(--valid);
 }
 
+/* Cápsula completa del campo Curriculum Vitae */
 .file-shell {
   padding: 0 7px 0 0;
   overflow: hidden;
 }
 
+/* Botón Seleccionar del campo Curriculum Vitae */
 .file-shell button {
   align-self: stretch;
   width: 33%;
@@ -151,45 +170,52 @@ label,
   text-transform: uppercase;
 }
 
+/* Texto interno del archivo: Solo .docx, .pdf */
 .file-shell span {
   height: 60px;
   flex: 1;
-  padding: 0 16px;
+  padding: 0px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--purple-soft);
   border-radius: 999px;
   color: var(--purple-mid);
-  font-size: clamp(20px, 1.3vw, 25px);
+  font-size: clamp(25px, 1.3vw, 25px);
   text-transform: uppercase;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
+/* Input real de archivo oculto */
 .file-shell input {
   display: none;
 }
 
+/* Campos especiales: fecha y género */
 .date-shell,
 .select-shell {
   position: relative;
 }
 
+/* Cápsula del campo Fecha de nacimiento */
 .date-shell {
   padding-right: 10px;
 }
 
+/* Input interno de Fecha de nacimiento */
 .date-shell input {
-  padding-right: 14px;
+  padding-right: 20px;
   color: var(--purple-mid);
 }
 
+/* Color de fecha cuando ya tiene valor */
 .date-shell input.has-value {
   color: var(--purple-dark);
 }
 
+/* Botón del calendario e icono/flecha del select */
 .calendar-button,
 .select-arrow {
   flex: 0 0 42px;
@@ -203,10 +229,12 @@ label,
   color: var(--purple-dark);
 }
 
+/* Botón clickeable del calendario */
 .calendar-button {
   cursor: pointer;
 }
 
+/* Tamaño y estilo del icono calendario y flecha */
 .calendar-button svg,
 .select-arrow svg {
   width: 30px;
@@ -219,30 +247,36 @@ label,
   stroke-linejoin: round;
 }
 
+/* Oculta el icono nativo del calendario para usar el nuestro */
 input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
   cursor: pointer;
 }
 
+/* Cápsula del campo Género */
 .select-shell {
   padding-right: 7px;
 }
 
+/* Select interno de Género */
 .select-shell select {
   appearance: none;
   padding-right: 10px;
 }
 
+/* Flecha personalizada del select */
 .select-arrow {
   pointer-events: none;
 }
 
+/* Tamaño de la flecha personalizada */
 .select-arrow svg {
   width: 34px;
   height: 34px;
   stroke-width: 3.8;
 }
 
+/* Contenedor de botones Enviar y Cancelar */
 .buttons {
   margin-top: 1px;
   display: grid;
@@ -250,6 +284,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   gap: 5px;
 }
 
+/* Botones Enviar y Cancelar */
 .buttons button {
   min-width: 250px;
   min-height: 56px;
@@ -264,12 +299,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
+/* Efecto al pasar el mouse sobre botones */
 .buttons button:hover,
 .file-shell button:hover,
 .calendar-button:hover {
   filter: brightness(0.96);
 }
 
+/* Franja inferior con texto */
 footer {
   width: min(1500px, 94vw);
   min-height: 46px;
@@ -284,6 +321,7 @@ footer {
   text-transform: uppercase;
 }
 
+/* Ajustes para tablet */
 @media (max-width: 992px) {
   .page {
     padding: 16px 14px 20px;
@@ -315,6 +353,7 @@ footer {
   }
 }
 
+/* Ajustes para celular */
 @media (max-width: 576px) {
   .form-card {
     padding: 24px 18px 30px;
