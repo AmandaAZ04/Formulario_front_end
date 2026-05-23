@@ -1,6 +1,16 @@
 const formulario = document.getElementById('registroForm');
 const btnCancelar = document.getElementById('btnCancelar');
 
+const dominiosPermitidos = [
+  'gmail.com',
+  'hotmail.com',
+  'outlook.com',
+  'yahoo.com',
+  'icloud.com',
+  'inacapmail.cl',
+  'inacap.cl'
+];
+
 const campos = [
   {
     id: 'nombre',
@@ -9,34 +19,10 @@ const campos = [
     validar: validarNombre
   },
   {
-    id: 'rut',
-    icono: 'iconoRut',
-    error: 'errorRut',
-    validar: validarRut
-  },
-  {
-    id: 'fechaNacimiento',
-    icono: 'iconoFecha',
-    error: 'errorFecha',
-    validar: validarFechaNacimiento
-  },
-  {
     id: 'cv',
     icono: 'iconoCv',
     error: 'errorCv',
     validar: validarCv
-  },
-  {
-    id: 'email',
-    icono: 'iconoEmail',
-    error: 'errorEmail',
-    validar: validarEmail
-  },
-  {
-    id: 'genero',
-    icono: 'iconoGenero',
-    error: 'errorGenero',
-    validar: validarGenero
   },
   {
     id: 'password',
@@ -45,10 +31,34 @@ const campos = [
     validar: validarPassword
   },
   {
+    id: 'rut',
+    icono: 'iconoRut',
+    error: 'errorRut',
+    validar: validarRut
+  },
+  {
+    id: 'email',
+    icono: 'iconoEmail',
+    error: 'errorEmail',
+    validar: validarEmail
+  },
+  {
     id: 'repetirPassword',
     icono: 'iconoRepetirPassword',
     error: 'errorRepetirPassword',
     validar: validarRepetirPassword
+  },
+  {
+    id: 'fechaNacimiento',
+    icono: 'iconoFecha',
+    error: 'errorFecha',
+    validar: validarFechaNacimiento
+  },
+  {
+    id: 'genero',
+    icono: 'iconoGenero',
+    error: 'errorGenero',
+    validar: validarGenero
   }
 ];
 
@@ -62,10 +72,59 @@ function validarNombre(input) {
     };
   }
 
-  if (valor.length < 5) {
+  if (valor.length < 5 || !valor.includes(' ')) {
     return {
       valido: false,
       mensaje: 'Ingrese nombre y apellido.'
+    };
+  }
+
+  return {
+    valido: true,
+    mensaje: ''
+  };
+}
+
+function validarCv(input) {
+  if (input.files.length === 0) {
+    limpiarCampoPorId('cv', 'iconoCv', 'errorCv');
+    return {
+      valido: true,
+      mensaje: ''
+    };
+  }
+
+  const archivo = input.files[0].name;
+  const regexArchivo = /\.(pdf|docx)$/i;
+
+  if (!regexArchivo.test(archivo)) {
+    return {
+      valido: false,
+      mensaje: 'El archivo debe ser PDF o DOCX.'
+    };
+  }
+
+  return {
+    valido: true,
+    mensaje: ''
+  };
+}
+
+function validarPassword(input) {
+  const valor = input.value;
+  const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,12}$/;
+
+  if (valor === '') {
+    return {
+      valido: false,
+      mensaje: 'La contraseña es obligatoria.'
+    };
+  }
+
+  if (!regexPassword.test(valor)) {
+    return {
+      valido: false,
+      mensaje: 'Debe tener 8 a 12 caracteres, mayúscula, minúscula, número y símbolo.'
     };
   }
 
@@ -133,77 +192,8 @@ function validarRut(input) {
   };
 }
 
-function validarFechaNacimiento(input) {
-  const valor = input.value.trim();
-
-  if (valor === '') {
-    limpiarCampo(input);
-    return {
-      valido: true,
-      mensaje: ''
-    };
-  }
-
-  const regexFecha = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-
-  if (!regexFecha.test(valor)) {
-    return {
-      valido: false,
-      mensaje: 'Use el formato dd/MM/yyyy.'
-    };
-  }
-
-  const partes = valor.split('/');
-  const dia = Number(partes[0]);
-  const mes = Number(partes[1]);
-  const anio = Number(partes[2]);
-
-  const fecha = new Date(anio, mes - 1, dia);
-
-  if (
-    fecha.getFullYear() !== anio ||
-    fecha.getMonth() !== mes - 1 ||
-    fecha.getDate() !== dia
-  ) {
-    return {
-      valido: false,
-      mensaje: 'Ingrese una fecha real.'
-    };
-  }
-
-  return {
-    valido: true,
-    mensaje: ''
-  };
-}
-
-function validarCv(input) {
-  if (input.files.length === 0) {
-    limpiarCampo(input);
-    return {
-      valido: true,
-      mensaje: ''
-    };
-  }
-
-  const archivo = input.files[0].name;
-  const regexArchivo = /\.(pdf|docx)$/i;
-
-  if (!regexArchivo.test(archivo)) {
-    return {
-      valido: false,
-      mensaje: 'El archivo debe ser PDF o DOCX.'
-    };
-  }
-
-  return {
-    valido: true,
-    mensaje: ''
-  };
-}
-
 function validarEmail(input) {
-  const valor = input.value.trim();
+  const valor = input.value.trim().toLowerCase();
   const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (valor === '') {
@@ -220,38 +210,12 @@ function validarEmail(input) {
     };
   }
 
-  return {
-    valido: true,
-    mensaje: ''
-  };
-}
+  const dominio = valor.split('@')[1];
 
-function validarGenero(input) {
-  if (input.value === '') {
-    limpiarCampo(input);
-  }
-
-  return {
-    valido: true,
-    mensaje: ''
-  };
-}
-
-function validarPassword(input) {
-  const valor = input.value;
-  const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,12}$/;
-
-  if (valor === '') {
+  if (!dominiosPermitidos.includes(dominio)) {
     return {
       valido: false,
-      mensaje: 'La contraseña es obligatoria.'
-    };
-  }
-
-  if (!regexPassword.test(valor)) {
-    return {
-      valido: false,
-      mensaje: 'Debe tener 8 a 12 caracteres, mayúscula, minúscula, número y símbolo.'
+      mensaje: 'Use un dominio válido: gmail, hotmail, outlook, yahoo, icloud o inacapmail.'
     };
   }
 
@@ -277,6 +241,44 @@ function validarRepetirPassword(input) {
       valido: false,
       mensaje: 'Las contraseñas no coinciden.'
     };
+  }
+
+  return {
+    valido: true,
+    mensaje: ''
+  };
+}
+
+function validarFechaNacimiento(input) {
+  const valor = input.value;
+
+  if (valor === '') {
+    limpiarCampoPorId('fechaNacimiento', 'iconoFecha', 'errorFecha');
+    return {
+      valido: true,
+      mensaje: ''
+    };
+  }
+
+  const fechaIngresada = new Date(valor);
+  const hoy = new Date();
+
+  if (fechaIngresada > hoy) {
+    return {
+      valido: false,
+      mensaje: 'La fecha no puede ser futura.'
+    };
+  }
+
+  return {
+    valido: true,
+    mensaje: ''
+  };
+}
+
+function validarGenero(input) {
+  if (input.value === '') {
+    limpiarCampoPorId('genero', 'iconoGenero', 'errorGenero');
   }
 
   return {
@@ -317,17 +319,13 @@ function marcarInvalido(input, iconoId, errorId, mensaje) {
   error.textContent = mensaje;
 }
 
-function limpiarCampo(input) {
+function limpiarCampoPorId(inputId, iconoId, errorId) {
+  const input = document.getElementById(inputId);
+  const icono = document.getElementById(iconoId);
+  const error = document.getElementById(errorId);
+
   input.classList.remove('is-valid');
   input.classList.remove('is-invalid');
-}
-
-function limpiarEstadoCampo(campo) {
-  const input = document.getElementById(campo.id);
-  const icono = document.getElementById(campo.icono);
-  const error = document.getElementById(campo.error);
-
-  limpiarCampo(input);
 
   icono.textContent = '';
   icono.classList.remove('valido');
@@ -341,10 +339,19 @@ function validarCampo(campo) {
   const resultado = campo.validar(input);
 
   if (resultado.valido) {
-    if (input.value !== '' || input.files && input.files.length > 0) {
-      marcarValido(input, campo.icono, campo.error);
+    if (campo.id === 'cv' && input.files.length === 0) {
+      return true;
     }
 
+    if (campo.id === 'fechaNacimiento' && input.value === '') {
+      return true;
+    }
+
+    if (campo.id === 'genero' && input.value === '') {
+      return true;
+    }
+
+    marcarValido(input, campo.icono, campo.error);
     return true;
   }
 
@@ -374,7 +381,7 @@ function limpiarFormulario() {
   formulario.reset();
 
   campos.forEach(function (campo) {
-    limpiarEstadoCampo(campo);
+    limpiarCampoPorId(campo.id, campo.icono, campo.error);
   });
 }
 
@@ -386,7 +393,7 @@ campos.forEach(function (campo) {
   });
 
   input.addEventListener('input', function () {
-    limpiarEstadoCampo(campo);
+    limpiarCampoPorId(campo.id, campo.icono, campo.error);
   });
 
   input.addEventListener('change', function () {
