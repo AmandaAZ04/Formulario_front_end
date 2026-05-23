@@ -6,6 +6,9 @@ const nombreCv = document.getElementById('nombreCv');
 const btnCalendario = document.getElementById('btnCalendario');
 const fechaNacimiento = document.getElementById('fechaNacimiento');
 const boxFecha = document.getElementById('boxFecha');
+const boxGenero = document.getElementById('boxGenero');
+const genero = document.getElementById('genero');
+const btnGenero = document.getElementById('btnGenero');
 
 const dominiosPermitidos = [
   'gmail.com',
@@ -46,12 +49,12 @@ function filtrarNombre(input) {
 function validarRut(input) {
   const valor = limpiarRut(input.value);
 
-  if (valor === '' || !/^[0-9]+[0-9kK]$/.test(valor)) {
+  if (valor === '' || !/^[0-9]+[0-9]$/.test(valor)) {
     return { valido: false };
   }
 
   const cuerpo = valor.slice(0, -1);
-  const dv = valor.slice(-1).toUpperCase();
+  const dv = valor.slice(-1);
 
   let suma = 0;
   let multiplicador = 2;
@@ -77,6 +80,10 @@ function validarRut(input) {
   }
 
   return { valido: dv === dvEsperado };
+}
+
+function filtrarRut(input) {
+  input.value = input.value.replace(/[^0-9.-]/g, '');
 }
 
 function validarFechaNacimiento(input) {
@@ -218,6 +225,14 @@ function abrirCalendario() {
   }
 }
 
+function abrirGenero() {
+  if (genero.showPicker) {
+    genero.showPicker();
+  } else {
+    genero.focus();
+  }
+}
+
 function configurarTogglePassword(inputId, botonId) {
   const input = document.getElementById(inputId);
   const boton = document.getElementById(botonId);
@@ -248,6 +263,10 @@ campos.forEach(function (campo) {
   input.addEventListener('input', function () {
     if (campo.id === 'nombre') {
       filtrarNombre(input);
+    }
+
+    if (campo.id === 'rut') {
+      filtrarRut(input);
     }
 
     const box = document.getElementById(campo.box);
@@ -293,6 +312,14 @@ btnCalendario.addEventListener('click', function (event) {
   event.preventDefault();
   event.stopPropagation();
   abrirCalendario();
+});
+
+boxGenero.addEventListener('click', abrirGenero);
+
+btnGenero.addEventListener('click', function (event) {
+  event.preventDefault();
+  event.stopPropagation();
+  abrirGenero();
 });
 
 configurarTogglePassword('password', 'togglePassword');
