@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Registro</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+  <main class="container py-5">
+    <section class="form-wrapper mx-auto">
+      <h1 class="text-center mb-4">Formulario de Registro</h1>
+
+      <form id="registroForm" novalidate>
+        <div class="row g-4">
+          <div class="col-12 col-md-6">
+            <label for="nombre" class="form-label">Nombre completo</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre completo">
+              <span class="input-group-text estado-campo" id="iconoNombre"></span>
+              <div class="invalid-feedback" id="errorNombre"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="rut" class="form-label">Rut</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="rut" placeholder="Ej: 12.345.678-9">
+              <span class="input-group-text estado-campo" id="iconoRut"></span>
+              <div class="invalid-feedback" id="errorRut"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="fechaNacimiento" placeholder="dd/MM/yyyy">
+              <span class="input-group-text estado-campo" id="iconoFecha"></span>
+              <div class="invalid-feedback" id="errorFecha"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="cv" class="form-label">Curriculum Vitae</label>
+            <div class="input-group">
+              <input type="file" class="form-control" id="cv" accept=".pdf,.docx">
+              <span class="input-group-text estado-campo" id="iconoCv"></span>
+              <div class="invalid-feedback" id="errorCv"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="email" placeholder="nombre@servidor.cl">
+              <span class="input-group-text estado-campo" id="iconoEmail"></span>
+              <div class="invalid-feedback" id="errorEmail"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="genero" class="form-label">Género</label>
+            <div class="input-group">
+              <select class="form-select" id="genero">
+                <option value="">Seleccione...</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="no-decir">Prefiero no decir</option>
+              </select>
+              <span class="input-group-text estado-campo" id="iconoGenero"></span>
+              <div class="invalid-feedback" id="errorGenero"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="input-group">
+              <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+              <span class="input-group-text estado-campo" id="iconoPassword"></span>
+              <div class="invalid-feedback" id="errorPassword"></div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label for="repetirPassword" class="form-label">Repetir contraseña</label>
+            <div class="input-group">
+              <input type="password" class="form-control" id="repetirPassword" placeholder="Repita su contraseña">
+              <span class="input-group-text estado-campo" id="iconoRepetirPassword"></span>
+              <div class="invalid-feedback" id="errorRepetirPassword"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-3 mt-4">
+          <button type="button" class="btn btn-outline-light" id="btnCancelar">
+            Cancelar
+          </button>
+
+          <button type="submit" class="btn btn-light" id="btnEnviar">
+            Enviar
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+
+</html>
