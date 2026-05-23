@@ -5,6 +5,7 @@ const inputCv = document.getElementById('cv');
 const nombreCv = document.getElementById('nombreCv');
 const btnCalendario = document.getElementById('btnCalendario');
 const fechaNacimiento = document.getElementById('fechaNacimiento');
+const boxFecha = document.getElementById('boxFecha');
 
 const dominiosPermitidos = [
   'gmail.com',
@@ -29,7 +30,17 @@ const campos = [
 
 function validarNombre(input) {
   const valor = input.value.trim();
-  return { valido: valor !== '' && valor.length >= 5 && valor.includes(' ') };
+  const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+
+  return {
+    valido: valor !== '' && valor.length >= 5 && valor.includes(' ') && regexNombre.test(valor)
+  };
+}
+
+function filtrarNombre(input) {
+  input.value = input.value
+    .replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '')
+    .replace(/\s{2,}/g, ' ');
 }
 
 function validarRut(input) {
@@ -99,6 +110,7 @@ function validarEmail(input) {
   }
 
   const dominio = valor.split('@')[1];
+
   return { valido: dominiosPermitidos.includes(dominio) };
 }
 
@@ -119,7 +131,10 @@ function validarPassword(input) {
 
 function validarRepetirPassword(input) {
   const password = document.getElementById('password').value;
-  return { valido: input.value !== '' && input.value === password };
+
+  return {
+    valido: input.value !== '' && input.value === password
+  };
 }
 
 function limpiarRut(rut) {
@@ -190,22 +205,61 @@ function limpiarFormulario() {
     const box = document.getElementById(campo.box);
     pintarEstado(box, '');
   });
+
+  cerrarPassword('password', 'togglePassword');
+  cerrarPassword('repetirPassword', 'toggleRepetirPassword');
+}
+
+function abrirCalendario() {
+  if (fechaNacimiento.showPicker) {
+    fechaNacimiento.showPicker();
+  } else {
+    fechaNacimiento.focus();
+  }
+}
+
+function configurarTogglePassword(inputId, botonId) {
+  const input = document.getElementById(inputId);
+  const boton = document.getElementById(botonId);
+  const imagen = boton.querySelector('img');
+
+  boton.addEventListener('click', function () {
+    const estaOculta = input.type === 'password';
+
+    input.type = estaOculta ? 'text' : 'password';
+    imagen.src = estaOculta ? './assets/img/OJITO.png' : './assets/img/CERRADO.png';
+    boton.setAttribute('aria-label', estaOculta ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  });
+}
+
+function cerrarPassword(inputId, botonId) {
+  const input = document.getElementById(inputId);
+  const boton = document.getElementById(botonId);
+  const imagen = boton.querySelector('img');
+
+  input.type = 'password';
+  imagen.src = './assets/img/CERRADO.png';
+  boton.setAttribute('aria-label', 'Mostrar contraseña');
 }
 
 campos.forEach(function (campo) {
   const input = document.getElementById(campo.id);
 
-  input.addEventListener('blur', function () {
-    validarCampo(campo, false);
-  });
-
   input.addEventListener('input', function () {
+    if (campo.id === 'nombre') {
+      filtrarNombre(input);
+    }
+
     const box = document.getElementById(campo.box);
     pintarEstado(box, '');
 
     if (campo.id === 'fechaNacimiento') {
       input.classList.toggle('has-value', input.value !== '');
     }
+  });
+
+  input.addEventListener('blur', function () {
+    validarCampo(campo, false);
   });
 
   input.addEventListener('change', function () {
@@ -228,16 +282,21 @@ inputCv.addEventListener('change', function () {
     nombreCv.textContent = 'Solo .docx, .pdf';
   }
 
-  validarCampo(campos[3], false);
+  validarCampo(campos.find(function (campo) {
+    return campo.id === 'cv';
+  }), false);
 });
 
-btnCalendario.addEventListener('click', function () {
-  if (fechaNacimiento.showPicker) {
-    fechaNacimiento.showPicker();
-  } else {
-    fechaNacimiento.focus();
-  }
+boxFecha.addEventListener('click', abrirCalendario);
+
+btnCalendario.addEventListener('click', function (event) {
+  event.preventDefault();
+  event.stopPropagation();
+  abrirCalendario();
 });
+
+configurarTogglePassword('password', 'togglePassword');
+configurarTogglePassword('repetirPassword', 'toggleRepetirPassword');
 
 formulario.addEventListener('submit', validarFormulario);
 btnCancelar.addEventListener('click', limpiarFormulario);
