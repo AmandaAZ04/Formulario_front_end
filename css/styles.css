@@ -167,7 +167,7 @@ label,
   background: var(--purple-mid);
   color: var(--purple-dark);
   font-family: "Bebas Neue", Impact, sans-serif;
-  font-size: clamp(20px, 1.2vw, 25px);
+  font-size: clamp(25px, 1.2vw, 25px);
   text-transform: uppercase;
 }
 
@@ -182,7 +182,7 @@ label,
   background: var(--purple-soft);
   border-radius: 999px;
   color: var(--purple-mid);
-  font-size: clamp(20px, 1.3vw, 25px);
+  font-size: clamp(25px, 1.3vw, 25px);
   text-transform: uppercase;
   overflow: hidden;
   white-space: nowrap;
