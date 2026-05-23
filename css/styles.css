@@ -346,9 +346,19 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   line-height: 1;
   text-transform: uppercase;
   cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, filter 0.18s ease;
 }
 
-.buttons button:hover,
+#btnEnviar:hover {
+  background: var(--valid);
+  color: var(--valid-dark);
+}
+
+#btnCancelar:hover {
+  background: var(--invalid);
+  color: var(--invalid-dark);
+}
+
 .file-shell button:hover,
 .calendar-button:hover,
 .password-toggle:hover,
