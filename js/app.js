@@ -184,6 +184,7 @@ function validarFormulario(event) {
 function limpiarFormulario() {
   formulario.reset();
   nombreCv.textContent = 'Solo .docx, .pdf';
+  fechaNacimiento.classList.remove('has-value');
 
   campos.forEach(function (campo) {
     const box = document.getElementById(campo.box);
@@ -201,9 +202,17 @@ campos.forEach(function (campo) {
   input.addEventListener('input', function () {
     const box = document.getElementById(campo.box);
     pintarEstado(box, '');
+
+    if (campo.id === 'fechaNacimiento') {
+      input.classList.toggle('has-value', input.value !== '');
+    }
   });
 
   input.addEventListener('change', function () {
+    if (campo.id === 'fechaNacimiento') {
+      input.classList.toggle('has-value', input.value !== '');
+    }
+
     validarCampo(campo, false);
   });
 });
