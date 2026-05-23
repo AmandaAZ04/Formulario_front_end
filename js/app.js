@@ -17,63 +17,26 @@ const dominiosPermitidos = [
 ];
 
 const campos = [
-  {
-    id: 'nombre',
-    box: 'boxNombre',
-    validar: validarNombre
-  },
-  {
-    id: 'rut',
-    box: 'boxRut',
-    validar: validarRut
-  },
-  {
-    id: 'fechaNacimiento',
-    box: 'boxFecha',
-    validar: validarFechaNacimiento
-  },
-  {
-    id: 'cv',
-    box: 'boxCv',
-    validar: validarCv
-  },
-  {
-    id: 'email',
-    box: 'boxEmail',
-    validar: validarEmail
-  },
-  {
-    id: 'genero',
-    box: 'boxGenero',
-    validar: validarGenero
-  },
-  {
-    id: 'password',
-    box: 'boxPassword',
-    validar: validarPassword
-  },
-  {
-    id: 'repetirPassword',
-    box: 'boxRepetirPassword',
-    validar: validarRepetirPassword
-  }
+  { id: 'nombre', box: 'boxNombre', validar: validarNombre },
+  { id: 'rut', box: 'boxRut', validar: validarRut },
+  { id: 'fechaNacimiento', box: 'boxFecha', validar: validarFechaNacimiento },
+  { id: 'cv', box: 'boxCv', validar: validarCv },
+  { id: 'email', box: 'boxEmail', validar: validarEmail },
+  { id: 'genero', box: 'boxGenero', validar: validarGenero },
+  { id: 'password', box: 'boxPassword', validar: validarPassword },
+  { id: 'repetirPassword', box: 'boxRepetirPassword', validar: validarRepetirPassword }
 ];
 
 function validarNombre(input) {
   const valor = input.value.trim();
-
-  return {
-    valido: valor !== '' && valor.length >= 5 && valor.includes(' ')
-  };
+  return { valido: valor !== '' && valor.length >= 5 && valor.includes(' ') };
 }
 
 function validarRut(input) {
   const valor = limpiarRut(input.value);
 
   if (valor === '' || !/^[0-9]+[0-9kK]$/.test(valor)) {
-    return {
-      valido: false
-    };
+    return { valido: false };
   }
 
   const cuerpo = valor.slice(0, -1);
@@ -102,41 +65,29 @@ function validarRut(input) {
     dvEsperado = String(resultado);
   }
 
-  return {
-    valido: dv === dvEsperado
-  };
+  return { valido: dv === dvEsperado };
 }
 
 function validarFechaNacimiento(input) {
   if (input.value === '') {
-    return {
-      valido: true,
-      opcionalVacio: true
-    };
+    return { valido: true, opcionalVacio: true };
   }
 
   const fechaIngresada = new Date(input.value);
   const hoy = new Date();
 
-  return {
-    valido: fechaIngresada <= hoy
-  };
+  return { valido: fechaIngresada <= hoy };
 }
 
 function validarCv(input) {
   if (input.files.length === 0) {
-    return {
-      valido: true,
-      opcionalVacio: true
-    };
+    return { valido: true, opcionalVacio: true };
   }
 
   const nombreArchivo = input.files[0].name;
   const regexArchivo = /\.(pdf|docx)$/i;
 
-  return {
-    valido: regexArchivo.test(nombreArchivo)
-  };
+  return { valido: regexArchivo.test(nombreArchivo) };
 }
 
 function validarEmail(input) {
@@ -144,46 +95,31 @@ function validarEmail(input) {
   const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!regexEmail.test(valor)) {
-    return {
-      valido: false
-    };
+    return { valido: false };
   }
 
   const dominio = valor.split('@')[1];
-
-  return {
-    valido: dominiosPermitidos.includes(dominio)
-  };
+  return { valido: dominiosPermitidos.includes(dominio) };
 }
 
 function validarGenero(input) {
   if (input.value === '') {
-    return {
-      valido: true,
-      opcionalVacio: true
-    };
+    return { valido: true, opcionalVacio: true };
   }
 
-  return {
-    valido: true
-  };
+  return { valido: true };
 }
 
 function validarPassword(input) {
   const valor = input.value;
   const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,12}$/;
 
-  return {
-    valido: regexPassword.test(valor)
-  };
+  return { valido: regexPassword.test(valor) };
 }
 
 function validarRepetirPassword(input) {
   const password = document.getElementById('password').value;
-
-  return {
-    valido: input.value !== '' && input.value === password
-  };
+  return { valido: input.value !== '' && input.value === password };
 }
 
 function limpiarRut(rut) {
