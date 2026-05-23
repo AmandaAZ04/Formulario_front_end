@@ -1,190 +1,330 @@
+:root {
+  --purple-dark: #65008d;
+  --purple-mid: #db73f4;
+  --purple-light: #f3cff8;
+  --purple-page: #d972f4;
+  --valid: #76d64f;
+  --invalid: #ff515c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f7a8a8, #f8caca);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--purple-page);
+  font-family: "Bebas Neue", Impact, sans-serif;
+  color: var(--purple-dark);
 }
 
-.form-wrapper {
-  width: min(1360px, 96vw);
-  background-color: #e97878;
-  border: 4px solid #ffffff;
-  border-radius: 22px;
-  padding: 34px 54px 36px;
-  color: #ffffff;
-  box-shadow: 0 20px 55px rgba(115, 28, 28, 0.3);
+.page {
+  min-height: 100vh;
+  padding: 28px 26px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.form-wrapper h1 {
-  font-size: 42px;
-  font-weight: 800;
+.form-card {
+  width: min(1850px, 97vw);
+  margin: 0 auto;
+  padding: 48px 72px 70px;
+  background: var(--purple-light);
+  border-radius: 72px;
 }
 
-.campo-form {
-  margin-bottom: 36px;
+h1 {
+  margin: 0 0 44px;
+  text-align: center;
+  font-size: clamp(58px, 6vw, 112px);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  font-weight: 900;
+  color: var(--purple-dark);
+}
+
+.field {
+  margin-bottom: 46px;
 }
 
 .label-row {
+  height: 48px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 16px;
-  min-height: 30px;
-  margin-bottom: 8px;
+  gap: 18px;
 }
 
-.form-label {
-  margin-bottom: 0;
-  font-size: 21px;
-  font-weight: 800;
+label,
+.label-row span {
+  margin: 0;
+  font-size: clamp(34px, 2.9vw, 58px);
+  line-height: 0.9;
+  font-weight: 900;
+  color: var(--purple-dark);
+  text-transform: uppercase;
 }
 
-.obligatorio {
-  min-width: 16px;
-  text-align: right;
-  font-size: 16px;
-  font-weight: 800;
-  color: #ffffff;
-  white-space: nowrap;
+.label-row span {
+  min-width: 32px;
+  text-align: center;
 }
 
-.obligatorio.activo {
-  min-width: 120px;
-}
-
-.form-control,
-.form-select {
-  min-height: 50px;
-  border: 2px solid #ffffff;
-  border-radius: 11px;
-  font-size: 18px;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: #ffffff;
-  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-}
-
-.form-control.is-invalid,
-.form-select.is-invalid {
-  border-color: #dc3545;
-}
-
-.form-control.is-valid,
-.form-select.is-valid {
-  border-color: #198754;
-}
-
-.file-box {
-  position: relative;
+.input-shell,
+.file-shell {
+  width: 100%;
+  min-height: 74px;
+  padding: 8px 78px 8px 10px;
   display: flex;
   align-items: center;
-  min-height: 50px;
-  overflow: hidden;
-  background-color: #ffffff;
-  border: 2px solid #ffffff;
-  border-radius: 11px;
+  background: var(--purple-mid);
+  border: 8px solid var(--purple-mid);
+  border-radius: 999px;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
 }
 
-.file-box.is-invalid {
-  border-color: #dc3545;
-}
-
-.file-box.is-valid {
-  border-color: #198754;
-}
-
-.file-box::after {
-  position: absolute;
-  right: 14px;
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.file-box.is-invalid::after {
-  content: "!";
-  color: #dc3545;
-  border: 2px solid #dc3545;
-  width: 22px;
-  height: 22px;
-  line-height: 18px;
-  text-align: center;
-  border-radius: 50%;
-}
-
-.file-box.is-valid::after {
-  content: "✓";
-  color: #198754;
-}
-
-.file-button {
-  min-height: 50px;
-  padding: 0 24px;
-  color: #1f1f1f;
-  background-color: #ffffff;
+.input-shell input,
+.input-shell select {
+  width: 100%;
+  height: 58px;
+  padding: 0 22px;
   border: 0;
-  border-right: 1px solid #dddddd;
-  font-size: 17px;
+  outline: 0;
+  border-radius: 999px;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(26px, 2vw, 38px);
+  text-transform: uppercase;
 }
 
-.file-name {
-  flex: 1;
-  padding: 0 48px 0 18px;
-  color: #444444;
-  font-size: 17px;
-  white-space: nowrap;
+.input-shell input::placeholder,
+.input-shell select {
+  color: var(--purple-mid);
+  opacity: 1;
+}
+
+.input-shell.invalid,
+.file-shell.invalid {
+  background: var(--invalid);
+  border-color: var(--invalid);
+}
+
+.input-shell.invalid input,
+.input-shell.invalid select,
+.file-shell.invalid span {
+  color: var(--invalid);
+}
+
+.input-shell.invalid input::placeholder,
+.input-shell.invalid select {
+  color: var(--invalid);
+}
+
+.input-shell.valid,
+.file-shell.valid {
+  background: var(--valid);
+  border-color: var(--valid);
+}
+
+.input-shell.valid input,
+.input-shell.valid select,
+.file-shell.valid span {
+  color: var(--valid);
+}
+
+.file-shell {
+  padding: 0 78px 0 0;
   overflow: hidden;
+}
+
+.file-shell button {
+  align-self: stretch;
+  width: 34%;
+  min-width: 150px;
+  border: 0;
+  background: var(--purple-mid);
+  color: var(--purple-dark);
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(24px, 1.8vw, 34px);
+  text-transform: uppercase;
+}
+
+.file-shell span {
+  height: 58px;
+  flex: 1;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--purple-light);
+  color: var(--purple-mid);
+  font-size: clamp(26px, 2vw, 38px);
+  text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-#cv {
+.file-shell input {
   display: none;
 }
 
-.botones-form {
+.date-shell,
+.select-shell {
+  position: relative;
+}
+
+.date-shell input {
+  padding-right: 72px;
+}
+
+.calendar-button {
+  position: absolute;
+  right: 34px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  background: transparent;
+  color: var(--purple-dark);
+  cursor: pointer;
+}
+
+.calendar-button svg {
+  width: 42px;
+  height: 42px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+}
+
+.select-shell select {
+  appearance: none;
+  padding-right: 72px;
+}
+
+.select-shell::after {
+  content: "";
+  position: absolute;
+  right: 44px;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  border-right: 11px solid var(--purple-dark);
+  border-bottom: 11px solid var(--purple-dark);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
+.buttons {
+  margin-top: 16px;
+  display: grid;
+  justify-content: center;
+  gap: 22px;
+}
+
+.buttons button {
+  min-width: 290px;
+  min-height: 96px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--purple-mid);
+  color: var(--purple-dark);
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: clamp(42px, 3.3vw, 66px);
+  text-transform: uppercase;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.buttons button:hover,
+.file-shell button:hover,
+.calendar-button:hover {
+  filter: brightness(0.96);
+}
+
+footer {
+  height: 58px;
   display: flex;
-  justify-content: flex-end;
-  gap: 18px;
-  margin-top: 64px;
-}
-
-.btn {
-  min-width: 132px;
-  min-height: 48px;
-  font-size: 18px;
-  font-weight: 800;
-  border-radius: 10px;
-}
-
-.btn-light {
-  color: #b33b3b;
-}
-
-.btn-outline-light:hover {
-  color: #b33b3b;
+  align-items: center;
+  justify-content: center;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  font-size: clamp(24px, 2.2vw, 38px);
+  letter-spacing: 22px;
+  text-transform: uppercase;
 }
 
 @media (max-width: 992px) {
-  .form-wrapper {
-    width: 95vw;
-    padding: 28px;
+  .page {
+    padding: 18px 14px 0;
   }
 
-  .form-wrapper h1 {
-    font-size: 34px;
+  .form-card {
+    padding: 38px 32px 46px;
+    border-radius: 42px;
   }
 
-  .botones-form {
-    margin-top: 18px;
+  .field {
+    margin-bottom: 34px;
+  }
+
+  .buttons {
+    justify-content: stretch;
+  }
+
+  .buttons button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  footer {
+    letter-spacing: 8px;
+    text-align: center;
   }
 }
 
 @media (max-width: 576px) {
-  .botones-form {
-    flex-direction: column;
+  .form-card {
+    padding: 30px 20px 38px;
+    border-radius: 32px;
   }
 
-  .btn {
-    width: 100%;
+  .input-shell,
+  .file-shell {
+    min-height: 66px;
+    padding-right: 56px;
+  }
+
+  .file-shell {
+    padding-right: 0;
+  }
+
+  .file-shell button {
+    min-width: 120px;
+  }
+
+  .calendar-button {
+    right: 22px;
+  }
+
+  .select-shell::after {
+    right: 30px;
+  }
+
+  footer {
+    height: auto;
+    min-height: 52px;
+    padding: 10px;
+    letter-spacing: 5px;
   }
 }

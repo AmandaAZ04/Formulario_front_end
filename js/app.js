@@ -1,9 +1,10 @@
 const formulario = document.getElementById('registroForm');
 const btnCancelar = document.getElementById('btnCancelar');
-const btnSeleccionarCv = document.getElementById('btnSeleccionarCv');
+const btnCv = document.getElementById('btnCv');
 const inputCv = document.getElementById('cv');
 const nombreCv = document.getElementById('nombreCv');
-const cvBox = document.getElementById('cvBox');
+const btnCalendario = document.getElementById('btnCalendario');
+const fechaNacimiento = document.getElementById('fechaNacimiento');
 
 const dominiosPermitidos = [
   'gmail.com',
@@ -18,107 +19,58 @@ const dominiosPermitidos = [
 const campos = [
   {
     id: 'nombre',
-    requeridoId: 'reqNombre',
+    box: 'boxNombre',
     validar: validarNombre
   },
   {
-    id: 'cv',
-    validar: validarCv
-  },
-  {
-    id: 'password',
-    requeridoId: 'reqPassword',
-    validar: validarPassword
-  },
-  {
     id: 'rut',
-    requeridoId: 'reqRut',
+    box: 'boxRut',
     validar: validarRut
   },
   {
-    id: 'email',
-    requeridoId: 'reqEmail',
-    validar: validarEmail
-  },
-  {
-    id: 'repetirPassword',
-    requeridoId: 'reqRepetirPassword',
-    validar: validarRepetirPassword
-  },
-  {
     id: 'fechaNacimiento',
+    box: 'boxFecha',
     validar: validarFechaNacimiento
   },
   {
+    id: 'cv',
+    box: 'boxCv',
+    validar: validarCv
+  },
+  {
+    id: 'email',
+    box: 'boxEmail',
+    validar: validarEmail
+  },
+  {
     id: 'genero',
+    box: 'boxGenero',
     validar: validarGenero
+  },
+  {
+    id: 'password',
+    box: 'boxPassword',
+    validar: validarPassword
+  },
+  {
+    id: 'repetirPassword',
+    box: 'boxRepetirPassword',
+    validar: validarRepetirPassword
   }
 ];
 
 function validarNombre(input) {
   const valor = input.value.trim();
 
-  if (valor === '') {
-    return {
-      valido: false,
-      obligatorio: true
-    };
-  }
-
-  if (valor.length < 5 || !valor.includes(' ')) {
-    return {
-      valido: false
-    };
-  }
-
   return {
-    valido: true
-  };
-}
-
-function validarCv(input) {
-  if (input.files.length === 0) {
-    return {
-      valido: true,
-      opcionalVacio: true
-    };
-  }
-
-  const archivo = input.files[0].name;
-  const regexArchivo = /\.(pdf|docx)$/i;
-
-  return {
-    valido: regexArchivo.test(archivo)
-  };
-}
-
-function validarPassword(input) {
-  const valor = input.value;
-  const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,12}$/;
-
-  if (valor === '') {
-    return {
-      valido: false,
-      obligatorio: true
-    };
-  }
-
-  return {
-    valido: regexPassword.test(valor)
+    valido: valor !== '' && valor.length >= 5 && valor.includes(' ')
   };
 }
 
 function validarRut(input) {
   const valor = limpiarRut(input.value);
 
-  if (valor === '') {
-    return {
-      valido: false,
-      obligatorio: true
-    };
-  }
-
-  if (!/^[0-9]+[0-9kK]$/.test(valor)) {
+  if (valor === '' || !/^[0-9]+[0-9kK]$/.test(valor)) {
     return {
       valido: false
     };
@@ -155,16 +107,41 @@ function validarRut(input) {
   };
 }
 
+function validarFechaNacimiento(input) {
+  if (input.value === '') {
+    return {
+      valido: true,
+      opcionalVacio: true
+    };
+  }
+
+  const fechaIngresada = new Date(input.value);
+  const hoy = new Date();
+
+  return {
+    valido: fechaIngresada <= hoy
+  };
+}
+
+function validarCv(input) {
+  if (input.files.length === 0) {
+    return {
+      valido: true,
+      opcionalVacio: true
+    };
+  }
+
+  const nombreArchivo = input.files[0].name;
+  const regexArchivo = /\.(pdf|docx)$/i;
+
+  return {
+    valido: regexArchivo.test(nombreArchivo)
+  };
+}
+
 function validarEmail(input) {
   const valor = input.value.trim().toLowerCase();
   const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-  if (valor === '') {
-    return {
-      valido: false,
-      obligatorio: true
-    };
-  }
 
   if (!regexEmail.test(valor)) {
     return {
@@ -176,40 +153,6 @@ function validarEmail(input) {
 
   return {
     valido: dominiosPermitidos.includes(dominio)
-  };
-}
-
-function validarRepetirPassword(input) {
-  const password = document.getElementById('password').value;
-  const valor = input.value;
-
-  if (valor === '') {
-    return {
-      valido: false,
-      obligatorio: true
-    };
-  }
-
-  return {
-    valido: valor === password
-  };
-}
-
-function validarFechaNacimiento(input) {
-  const valor = input.value;
-
-  if (valor === '') {
-    return {
-      valido: true,
-      opcionalVacio: true
-    };
-  }
-
-  const fechaIngresada = new Date(valor);
-  const hoy = new Date();
-
-  return {
-    valido: fechaIngresada <= hoy
   };
 }
 
@@ -226,64 +169,61 @@ function validarGenero(input) {
   };
 }
 
+function validarPassword(input) {
+  const valor = input.value;
+  const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,12}$/;
+
+  return {
+    valido: regexPassword.test(valor)
+  };
+}
+
+function validarRepetirPassword(input) {
+  const password = document.getElementById('password').value;
+
+  return {
+    valido: input.value !== '' && input.value === password
+  };
+}
+
 function limpiarRut(rut) {
   return rut.replace(/\./g, '').replace(/-/g, '').trim();
 }
 
-function marcarObligatorio(requeridoId, activo) {
-  if (!requeridoId) {
-    return;
+function pintarEstado(box, estado) {
+  box.classList.remove('valid');
+  box.classList.remove('invalid');
+
+  if (estado === 'valid') {
+    box.classList.add('valid');
   }
 
-  const requerido = document.getElementById(requeridoId);
-
-  if (activo) {
-    requerido.textContent = '*Obligatorio*';
-    requerido.classList.add('activo');
-  } else {
-    requerido.textContent = '*';
-    requerido.classList.remove('activo');
+  if (estado === 'invalid') {
+    box.classList.add('invalid');
   }
-}
-
-function marcarValido(input, campo) {
-  input.classList.remove('is-invalid');
-  input.classList.add('is-valid');
-  marcarObligatorio(campo.requeridoId, false);
-}
-
-function marcarInvalido(input, campo, obligatorio) {
-  input.classList.remove('is-valid');
-  input.classList.add('is-invalid');
-  marcarObligatorio(campo.requeridoId, obligatorio);
-}
-
-function limpiarCampo(input, campo) {
-  input.classList.remove('is-valid');
-  input.classList.remove('is-invalid');
-  marcarObligatorio(campo.requeridoId, false);
 }
 
 function validarCampo(campo, mostrarVacio) {
   const input = document.getElementById(campo.id);
+  const box = document.getElementById(campo.box);
   const resultado = campo.validar(input);
 
   if (resultado.opcionalVacio) {
-    limpiarCampo(input, campo);
+    pintarEstado(box, '');
     return true;
   }
 
-  if (resultado.obligatorio && !mostrarVacio) {
-    limpiarCampo(input, campo);
+  if (!mostrarVacio && input.value.trim && input.value.trim() === '') {
+    pintarEstado(box, '');
     return false;
   }
 
   if (resultado.valido) {
-    marcarValido(input, campo);
+    pintarEstado(box, 'valid');
     return true;
   }
 
-  marcarInvalido(input, campo, resultado.obligatorio);
+  pintarEstado(box, 'invalid');
   return false;
 }
 
@@ -308,32 +248,11 @@ function validarFormulario(event) {
 function limpiarFormulario() {
   formulario.reset();
   nombreCv.textContent = 'Solo .docx, .pdf';
-  cvBox.classList.remove('is-valid');
-  cvBox.classList.remove('is-invalid');
 
   campos.forEach(function (campo) {
-    const input = document.getElementById(campo.id);
-    limpiarCampo(input, campo);
+    const box = document.getElementById(campo.box);
+    pintarEstado(box, '');
   });
-}
-
-function validarCvVisual() {
-  const resultado = validarCv(inputCv);
-
-  cvBox.classList.remove('is-valid');
-  cvBox.classList.remove('is-invalid');
-
-  if (resultado.opcionalVacio) {
-    return true;
-  }
-
-  if (resultado.valido) {
-    cvBox.classList.add('is-valid');
-    return true;
-  }
-
-  cvBox.classList.add('is-invalid');
-  return false;
 }
 
 campos.forEach(function (campo) {
@@ -344,7 +263,8 @@ campos.forEach(function (campo) {
   });
 
   input.addEventListener('input', function () {
-    limpiarCampo(input, campo);
+    const box = document.getElementById(campo.box);
+    pintarEstado(box, '');
   });
 
   input.addEventListener('change', function () {
@@ -352,7 +272,7 @@ campos.forEach(function (campo) {
   });
 });
 
-btnSeleccionarCv.addEventListener('click', function () {
+btnCv.addEventListener('click', function () {
   inputCv.click();
 });
 
@@ -363,7 +283,15 @@ inputCv.addEventListener('change', function () {
     nombreCv.textContent = 'Solo .docx, .pdf';
   }
 
-  validarCvVisual();
+  validarCampo(campos[3], false);
+});
+
+btnCalendario.addEventListener('click', function () {
+  if (fechaNacimiento.showPicker) {
+    fechaNacimiento.showPicker();
+  } else {
+    fechaNacimiento.focus();
+  }
 });
 
 formulario.addEventListener('submit', validarFormulario);

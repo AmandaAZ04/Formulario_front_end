@@ -7,103 +7,124 @@
   <title>Formulario de Registro</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 
 <body>
-  <main class="container-fluid py-4">
-    <section class="form-wrapper mx-auto">
-      <h1 class="text-center mb-4">Formulario de Registro</h1>
+  <main class="page">
+    <section class="form-card">
+      <h1>Formulario de Registro</h1>
 
       <form id="registroForm" novalidate>
-        <div class="row g-5">
+        <div class="row g-4">
           <div class="col-12 col-lg-4">
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="nombre" class="form-label">Nombre completo</label>
-                <span class="obligatorio" id="reqNombre">*</span>
+                <label for="nombre">Nombre completo</label>
+                <span>*</span>
               </div>
-              <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre completo">
-            </div>
-
-            <div class="campo-form">
-              <div class="label-row">
-                <label for="cv" class="form-label">Curriculum Vitae</label>
-              </div>
-
-              <div class="file-box" id="cvBox">
-                <button type="button" class="file-button" id="btnSeleccionarCv">Seleccionar</button>
-                <span class="file-name" id="nombreCv">Solo .docx, .pdf</span>
-                <input type="file" id="cv" accept=".pdf,.docx">
+              <div class="input-shell" id="boxNombre">
+                <input type="text" id="nombre" placeholder="Ingrese su nombre completo">
               </div>
             </div>
 
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="password" class="form-label">Contraseña</label>
-                <span class="obligatorio" id="reqPassword">*</span>
+                <label for="cv">Curriculum Vitae</label>
               </div>
-              <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+              <div class="file-shell" id="boxCv">
+                <button type="button" id="btnCv">Seleccionar</button>
+                <span id="nombreCv">Solo .docx, .pdf</span>
+                <input type="file" id="cv" accept=".docx,.pdf">
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="password">Contraseña</label>
+                <span>*</span>
+              </div>
+              <div class="input-shell" id="boxPassword">
+                <input type="password" id="password" placeholder="Ingrese su contraseña">
+              </div>
             </div>
           </div>
 
           <div class="col-12 col-lg-4">
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="rut" class="form-label">Rut</label>
-                <span class="obligatorio" id="reqRut">*</span>
+                <label for="rut">Rut</label>
+                <span>*</span>
               </div>
-              <input type="text" class="form-control" id="rut" placeholder="Ej: 12.345.678-9">
+              <div class="input-shell" id="boxRut">
+                <input type="text" id="rut" placeholder="Ej. 12346546-7">
+              </div>
             </div>
 
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="email" class="form-label">Email</label>
-                <span class="obligatorio" id="reqEmail">*</span>
+                <label for="email">Email</label>
+                <span>*</span>
               </div>
-              <input type="text" class="form-control" id="email" placeholder="nombre@gmail.com">
+              <div class="input-shell" id="boxEmail">
+                <input type="text" id="email" placeholder="nombre@gmail.com">
+              </div>
             </div>
 
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="repetirPassword" class="form-label">Repetir contraseña</label>
-                <span class="obligatorio" id="reqRepetirPassword">*</span>
+                <label for="repetirPassword">Repetir contraseña</label>
+                <span>*</span>
               </div>
-              <input type="password" class="form-control" id="repetirPassword" placeholder="Repita su contraseña">
-            </div>
-
-            <div class="botones-form">
-              <button type="button" class="btn btn-outline-light" id="btnCancelar">Cancelar</button>
-              <button type="submit" class="btn btn-light" id="btnEnviar">Guardar</button>
+              <div class="input-shell" id="boxRepetirPassword">
+                <input type="password" id="repetirPassword" placeholder="Repita su contraseña">
+              </div>
             </div>
           </div>
 
           <div class="col-12 col-lg-4">
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                <label for="fechaNacimiento">Fecha de nacimiento</label>
               </div>
-              <input type="date" class="form-control" id="fechaNacimiento">
+              <div class="input-shell date-shell" id="boxFecha">
+                <input type="date" id="fechaNacimiento">
+                <button type="button" class="calendar-button" id="btnCalendario" aria-label="Abrir calendario">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 2v3M17 2v3M4 9h16M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+                    <path d="M8 12h2M12 12h2M16 12h2M8 16h2M12 16h2M16 16h2" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
-            <div class="campo-form">
+            <div class="field">
               <div class="label-row">
-                <label for="genero" class="form-label">Género</label>
+                <label for="genero">Género</label>
               </div>
-              <select class="form-select" id="genero">
-                <option value="">Seleccione...</option>
-                <option value="femenino">Femenino</option>
-                <option value="masculino">Masculino</option>
-                <option value="otro">Otro</option>
-              </select>
+              <div class="input-shell select-shell" id="boxGenero">
+                <select id="genero">
+                  <option value="">Seleccione</option>
+                  <option value="femenino">Femenino</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="buttons">
+              <button type="submit">Enviar</button>
+              <button type="button" id="btnCancelar">Cancelar</button>
             </div>
           </div>
         </div>
       </form>
     </section>
+
+    <footer>Gracias por responder nuestro formulario</footer>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="./js/app.js"></script>
 </body>
 
